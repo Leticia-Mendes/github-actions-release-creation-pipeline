@@ -1,0 +1,22 @@
+name: Release Creation Pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      release_name: 
+        required: true
+        description: release name
+
+jobs:
+  Release-Creation:
+    runs-on: windows-latest
+      
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: Execute Release Creation Script
+        run: .github/scripts/CreateRealise1.ps1
+        shell: powershell
+        env:
+          release_name: ${{ inputs.release_name }}
+          token: ${{ secrets.LOCAL_TOKEN }}
+          
