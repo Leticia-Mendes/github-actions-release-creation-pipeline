@@ -1,0 +1,8 @@
+repos-devops:
+  ansible-playbooks: latest
+  powershell-scripts: latest
+  custom-github-action: tag.0.01.00
+repos-dev:
+  MakeupCatalog: latest
+  Blog_Pessoal: latest
+
