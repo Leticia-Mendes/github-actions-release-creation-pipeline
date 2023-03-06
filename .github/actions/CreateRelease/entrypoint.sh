@@ -5,5 +5,5 @@ set -o pipefail
 
 echo "**************************"
 echo $@
-pwsh /CreationRelease.ps1 $@
+pwsh /CreateRelease1.ps1 $@
 echo "**************************"
