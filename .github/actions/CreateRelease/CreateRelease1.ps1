@@ -1,6 +1,6 @@
 $release_name = $env:release_name
 $token = $env:token
-$user = "leticiaaraujo-mcd"
+$user = "Leticia-Mendes"
 
 
 function Main {
