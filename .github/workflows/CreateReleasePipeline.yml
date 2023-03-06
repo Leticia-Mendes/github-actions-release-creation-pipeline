@@ -19,4 +19,17 @@ jobs:
         env:
           release_name: ${{ inputs.release_name }}
           token: ${{ secrets.LOCAL_TOKEN }}
+                
+      - name: list files
+        run: |
+          $path = Get-ChildItem ReleaseCreation-*.csv
+          Write-Output $path
+          file = $path" >> $env:GITHUB_ENV
           
+      - name: Push Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.file }}
+          path: ./${{ env.file }}
+          retention-days: 10
+  
