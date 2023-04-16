@@ -1,7 +1,7 @@
 repos-devops:
   ansible-playbooks: latest
   powershell-scripts: latest
-  custom-github-action: tag.0.01.00
+  custom-github-action: latest
 repos-dev:
   MakeupCatalog: latest
 
