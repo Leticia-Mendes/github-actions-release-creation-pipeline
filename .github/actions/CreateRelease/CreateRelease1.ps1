@@ -43,7 +43,6 @@ function SetTagAndCreateRelease($releaseVersionsValues) {
 				$headers = New-Header
 				$response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
 
-				Write-Output $response.object.sha
 				$position = -1
 				$sha_tag = $($response.object.sha)[$position ]
 				$tag_name = $($response.ref.split("/"))[$position]
