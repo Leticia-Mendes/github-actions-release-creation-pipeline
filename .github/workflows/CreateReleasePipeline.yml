@@ -29,5 +29,5 @@ jobs:
         with:
           name: ReleaseCreation.csv
           path: ./ReleaseCreation.csv
-          retention-days: 10
+          retention-days: 60
   
