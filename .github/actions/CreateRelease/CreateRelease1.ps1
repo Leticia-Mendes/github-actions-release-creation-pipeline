@@ -79,8 +79,6 @@ function SetTagAndCreateRelease($releaseVersionsValues) {
 		Add-Content -Path "./ReleaseCreation.csv" $contentCsvFile		
 		Write-Host "-----------------------------------------"
 	}
-
-	}
 }
 
 Main
