@@ -10,7 +10,7 @@ function Main {
 }
 
 function New-ReleaseCreationCsvFile {
-	New-Item "./ReleaseCreation-$date.csv" -Value "Repository, Version/Tag, Release Name, Date, Branch, Status, `n"
+	New-Item "./ReleaseCreation.csv" -Value "Repository, Version/Tag, Release Name, Date, Branch, Status, Ahead of main, Behind of main, `n"
 }
 
 function Get-ReleaseVersionsFile {
@@ -37,6 +37,7 @@ function SetTagAndCreateRelease($releaseVersionsValues) {
 	$releaseVersionsValues.Keys | ForEach-Object {
 		$repo = $_
 		$tag_name = $releaseVersionsValues.$_
+		Write-Output "repo: $repo, tag_name: $tag_name"
 		try {
 			if ($tag_name -eq "latest") {
 				$url = "https://api.github.com/repos/$user/$repo/git/refs/tags?ref=refs/heads/main"		
