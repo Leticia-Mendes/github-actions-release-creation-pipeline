@@ -66,7 +66,7 @@ function SetTagAndCreateRelease($releaseVersionsValues) {
 			$sha_main = $response.sha
 			Write-Host "Repository: $repo, Latest sha from main: $sha_main, Sha from tag: $sha_tag"
 
-			# compare latest sha main x tag sha 			
+			# compare latest sha_main x sha_tag 			
 			$url = "https://api.github.com/repos/$user/$repo/compare/$sha_main...$sha_tag"
 			$status = Invoke-RestMethod -Uri $url -Headers $headers
 			Write-Host "comparison between commits: $status"
