@@ -1,33 +1,16 @@
 $release_name = $env:release_name
 $token = $env:token
 $user = "Leticia-Mendes"
-$date = Get-Date -Format MM-dd-yyyy
-
 
 function Main {
-	Get-Modules 
-	Get-Credentials
+	Install-Module powershell-yaml -Force
 	New-ReleaseCreationCsvFile
 	$releaseVersionsValues = Get-ReleaseVersionsFile
 	SetTagAndCreateRelease $releaseVersionsValues
 }
 
-function Get-Modules {
-	Install-Module powershell-yaml -Force
-	Install-Module -Name PowerShellForGitHub -Force 
-	Write-Host "Installed Modules"
-}
-
-function Get-Credentials {
-	$secureString = ($token | ConvertTo-SecureString -AsPlainText -Force)
-	$cred = New-Object System.Management.Automation.PSCredential "username is ignored", $secureString
-	Set-GitHubAuthentication -Credential $cred
-	$secureString = $null
-	$cred = $null
-}
-
 function New-ReleaseCreationCsvFile {
-	New-Item "./ReleaseCreation-$date.csv" -Value "Repository, Version/Tag, Release Name, Date, Branch, Status, `n"
+	New-Item "./ReleaseCreation.csv" -Value "Repository, Version/Tag, Release Name, Date, Branch, Status, Ahead of main, Behind of main, `n"
 }
 
 function Get-ReleaseVersionsFile {
@@ -38,47 +21,65 @@ function Get-ReleaseVersionsFile {
 	}
 	$releaseVersions = ConvertFrom-YAML $content
 	$releaseVersionsValues = $releaseVersions.Values
-	Write-Host "Release Versions Values: " $releaseVersionsValues
-	Write-Host "-------------------------- " 
 	return $releaseVersionsValues	
+}
+
+function New-Header() {
+	$headers = @{ 
+		"Authorization" = "Bearer $token" 
+		"Accept" = "application/vnd.github.v3+json"
+		"User-Agent" = "PowerShell"
+	}
+	return $headers
 }
 
 function SetTagAndCreateRelease($releaseVersionsValues) {
 	$releaseVersionsValues.Keys | ForEach-Object {
 		$repo = $_
-		$tag = $releaseVersionsValues.$_
-		Write-Host "RepoName: " $repo ", Tag: " $tag	
-	
-		if ($tag -eq "latest") {
-			try {
-				$latest = Get-GitHubRelease -OwnerName $user -RepositoryName $repo -Latest
-				Write-Host "latest " $latest
-				$tag = $latest.tag_name
-				Write-Host "latest tag => $tag"
-				Write-Host "The latest tag for the repository $repo is $tag"
-			}
-			catch {
-				Write-Host "No release found for $repo repository."
-				$tag = $date
-				write-host "A new tag $tag will be create for the repository $repo."
-			}
-		}
-		
+		$tag_name = $releaseVersionsValues.$_
 		try {
-			$newRelease = New-GitHubRelease -OwnerName $user -RepositoryName $repo -Name $release_name -Tag $tag -Body "Message here :) "
-			Write-Output "New-Release" $newRelease
-			$publishDate = $newRelease.published_at
-			$branch = $newRelease.target_commitish
-			$contentCsvFile = "$repo, $tag, $release_name, $publishDate, $branch,  - "
-			Add-Content -Path "./ReleaseCreation-$date.csv" $contentCsvFile
-			Write-Output "New release $release_name was created with $tag tag for the $repo repository."
-			Write-Host "-------------------------------"
+			if ($tag_name -eq "latest") {
+				$url = "https://api.github.com/repos/$user/$repo/git/refs/tags?ref=refs/heads/main"		
+				$headers = New-Header
+				$response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
+
+				$position = -1
+				$sha_tag = $($response.object.sha)[$position ]
+				$tag_name = $($response.ref.split("/"))[$position]
+			}
+			Write-Host "Repository: $repo, Latest tag: $tag_name, Sha: $sha_tag"
+
+			$url = "https://api.github.com/repos/$user/$repo/releases"
+			$bodyData = @{
+				tag_name = $tag_name
+				name = $release_name
+				body = "Message here :)"
+			} | ConvertTo-Json
+			$response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $bodyData
+			$response | Select-Object -Property tag_name, name, published_at, target_commitish, body, draft, prerelease		
+			$published_date = $response.published_at
+			$target_branch = $response.target_commitish
+
+			# get latest sha main
+			$url = "https://api.github.com/repos/$user/$repo/commits/main"
+			$response = Invoke-RestMethod -Uri $url -Headers $headers
+			$sha_main = $response.sha
+			Write-Host "Repository: $repo, Latest sha from main: $sha_main, Sha from tag: $sha_tag"
+
+			# compare latest sha main x tag sha 			
+			$url = "https://api.github.com/repos/$user/$repo/compare/$sha_main...$sha_tag"
+			$status = Invoke-RestMethod -Uri $url -Headers $headers
+			Write-Host "comparison between commits: $status"
+			Write-Host "Status: $($status.status)"
+			Write-Host "Ahead by: $($status.ahead_by)"
+			Write-Host "Behind by: $($status.behind_by)"
+
+			$contentCsvFile = "$repo, $tag_name, $release_name, $published_date, $target_branch, $($status.status), $($status.ahead_by), $($status.behind_by) "
+			Add-Content -Path "./ReleaseCreation.csv" $contentCsvFile		
+			Write-Host "-----------------------------------------"
 		}
 		catch {
-			$contentCsvFile = "$repo, has not been created a new release."
-			Add-Content "./ReleaseCreation-$date.csv" $contentCsvFile
-			Write-Output "A new version has not been created for the $repo repository."
-			Write-Host "-------------------------------"
+			Write-Host "Something went wrong whit repository $repo ."
 		}
 	}
 }
