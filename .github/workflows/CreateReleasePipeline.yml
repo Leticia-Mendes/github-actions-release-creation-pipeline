@@ -22,14 +22,12 @@ jobs:
                 
       - name: list files
         run: |
-          $path = Get-ChildItem ReleaseCreation-*.csv
-          Write-Output $path
-          "CSV_FILE = $path" >> $env:GITHUB_ENV
+          Get-ChildItem ReleaseCreation.csv
           
       - name: Push Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: $Env:CSV_FILE
-          path: ./$Env:CSV_FILE 
+          name: ReleaseCreation.csv
+          path: ./ReleaseCreation.csv
           retention-days: 10
   
