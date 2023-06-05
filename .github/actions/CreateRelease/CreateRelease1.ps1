@@ -79,7 +79,7 @@ function SetTagAndCreateRelease($releaseVersionsValues) {
 			Write-Host "-----------------------------------------"
 		}
 		catch {
-			Write-Host "Something went wrong whit repository $repo ."
+			Write-Host "Something went wrong with repository $repo ."
 			Write-Host "-----------------------------------------"
 		}
 	}
