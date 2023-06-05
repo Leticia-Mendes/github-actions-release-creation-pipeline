@@ -1,7 +1,8 @@
 repos-devops:
   ansible-playbooks: latest
-  powershell-scripts: latest
   custom-github-action: latest
+  powershell-scripts: latest
+  python-scripts: latest
 repos-dev:
   MakeupCatalog: latest
 
