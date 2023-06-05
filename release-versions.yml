@@ -3,4 +3,4 @@ repos-list-A:
   custom-github-action: latest
 repos-list-B:
   powershell-scripts: latest
-  python-scripts: latest
+  python-scripts: feature/main/exercises
