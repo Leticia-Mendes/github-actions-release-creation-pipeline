@@ -1,8 +1,6 @@
-repos-devops:
+repos-list-A:
   ansible-playbooks: latest
   custom-github-action: latest
+repos-list-B:
   powershell-scripts: latest
   python-scripts: latest
-repos-dev:
-  MakeupCatalog: latest
-
