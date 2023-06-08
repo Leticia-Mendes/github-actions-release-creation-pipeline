@@ -53,6 +53,6 @@ The pipeline generates the following artifacts:
 ![image](https://github.com/Leticia-Mendes/github-actions-pipelines/assets/90715443/6397c917-1226-41f4-a202-25005c6b44d4)
 
 
-You can access the generated artifacts by navigating to the **Actions** tab, selecting the completed workflow run, and downloading the artifact.
+You can access the generated artifacts by navigating to the **Actions** tab, selecting the completed workflow run. Click on **Sumary** and them click on **ReleaseCreation.csv** to downloading the artifact:
 ![image](https://github.com/Leticia-Mendes/github-actions-pipelines/assets/90715443/7e83e310-465c-4713-b1e3-2ac8808836d8)
 
