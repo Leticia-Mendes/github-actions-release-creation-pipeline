@@ -27,6 +27,24 @@ To create releases using the pipeline, follow these steps:
 
 The pipeline will execute the PowerShell script for each repository defined in the **`release-versions.yml`** file. It will create releases on GitHub, generate the **`ReleaseCreation.csv`** file, and upload it as an artifact.
 
+## The **`CreateRelease.ps1`** Script
+
+The **`CreateRelease.ps1`** script will perform the following actions:
+
+1. Install the **`powershell-yaml`** module if it is not already installed.
+2. Create a CSV file (**`ReleaseCreation.csv`**) to store release information.
+3. Read the repository names and versions from the **`release-versions.yml`** file.
+4. For each repository, it will do the following:
+    - If the version is set to "latest," it will fetch the latest tag from the GitHub API.
+    - Create a new release on GitHub with the specified tag name, release name, and body message.
+    - Retrieve and display the details of the created release.
+    - Get the latest commit SHA from the **`main`** branch.
+    - Compare the commit SHA of the tag with the latest commit SHA of the **`main`** branch.
+    - Display the comparison status, ahead by, and behind by information.
+    - Append the release information to the CSV file (**`ReleaseCreation.csv`**).
+    - Display a separator between each repository's output.
+5. If any errors occur during the process, an error message will be displayed.
+
 ## **Output**
 
 The pipeline generates the following artifacts:
