@@ -53,7 +53,8 @@ The **[CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipel
 The pipeline generates the following artifacts:
 
 - **ReleaseCreation.csv**: This file contains the release information for each repository, including the repository name, version/tag, release name, published date, target branch, comparison status, and commit differences.
-![image](https://github.com/Leticia-Mendes/github-actions-release-creation-pipeline/assets/90715443/15453f74-a1b3-43ad-984f-575cb0733651)
+![image](https://github.com/Leticia-Mendes/github-actions-release-creation-pipeline/assets/90715443/813ba310-7fe6-49ae-90f8-db6835365826)
+
 
 
 You can access the generated artifacts by navigating to the **Actions** tab, and selecting the completed workflow run. Click on **Sumary** and them click on **ReleaseCreation.csv** to download the artifact:
