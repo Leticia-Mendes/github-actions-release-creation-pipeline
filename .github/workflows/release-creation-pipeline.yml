@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
       
     steps:
-  #    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         
       - name: Execute Release Creation Script
         run: .github/actions/CreateRelease/CreateRelease1.ps1
