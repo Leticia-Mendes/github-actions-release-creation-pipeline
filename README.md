@@ -4,7 +4,7 @@ This GitHub Actions pipeline automates the process of creating releases on GitHu
 
 ## Workflow
 
-The workflow is defined in the **`.github/workflows/release-creation-pipeline.yml`** file. It consists of the following steps:
+The workflow is defined in the **[.github/workflows/release-creation-pipeline.yml](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/feature/main/readme/.github/workflows/release-creation-pipeline.yml)** file. It consists of the following steps:
 
 1. **Checkout**: Checks out the repository's code.
 2. **Execute Release Creation Script**: Runs the PowerShell script **[CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/main/.github/actions/CreateRelease/CreateRelease1.ps1)** located in the **`.github/actions/CreateRelease`** directory. This script reads the repository names and versions from the **`release-versions.yml`** file in the root directory.
