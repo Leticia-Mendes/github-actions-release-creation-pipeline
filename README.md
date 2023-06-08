@@ -7,7 +7,7 @@ This GitHub Actions pipeline automates the process of creating releases on GitHu
 The workflow is defined in the **`.github/workflows/release-creation-pipeline.yml`** file. It consists of the following steps:
 
 1. **Checkout**: Checks out the repository's code.
-2. **Execute Release Creation Script**: Runs the PowerShell script [CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/main/.github/actions/CreateRelease/CreateRelease1.ps1) located in the **`.github/actions/CreateRelease`** directory. This script reads the repository names and versions from the **`release-versions.yml`** file in the root directory.
+2. **Execute Release Creation Script**: Runs the PowerShell script **[CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/main/.github/actions/CreateRelease/CreateRelease1.ps1)** located in the **`.github/actions/CreateRelease`** directory. This script reads the repository names and versions from the **`release-versions.yml`** file in the root directory.
     - The release name is passed as an input parameter to the script using the **`release_name`** environment variable.
     - The GitHub personal access token is passed to the script using the **`token`** environment variable, which is stored as a secret (**`LOCAL_TOKEN`**) in the repository's settings.
 4. **List Files**: Lists the files in the repository, including the generated **`ReleaseCreation.csv`** file.
@@ -27,9 +27,9 @@ To create releases using the pipeline, follow these steps:
 
 The pipeline will execute the PowerShell script for each repository defined in the **`release-versions.yml`** file. It will create releases on GitHub, generate the **`ReleaseCreation.csv`** file, and upload it as an artifact.
 
-## The **`CreateRelease.ps1`** Script
+## The [CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/main/.github/actions/CreateRelease/CreateRelease1.ps1) Script
 
-The **`CreateRelease.ps1`** script will perform the following actions:
+The **`[CreateRelease.ps1](https://github.com/Leticia-Mendes/github-actions-pipelines/blob/main/.github/actions/CreateRelease/CreateRelease1.ps1)`** script will perform the following actions:
 
 1. Install the **`powershell-yaml`** module if it is not already installed.
 2. Create a CSV file (**`ReleaseCreation.csv`**) to store release information.
