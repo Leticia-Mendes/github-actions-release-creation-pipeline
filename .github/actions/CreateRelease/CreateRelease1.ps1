@@ -33,21 +33,25 @@ function New-Header() {
 	return $headers
 }
 
+function Get-LatestTag {
+	$url = "https://api.github.com/repos/$user/$repo/git/refs/tags?ref=refs/heads/main"		
+	$headers = New-Header
+	$response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
+	return $response
+}
+
 function SetTagAndCreateRelease($releaseVersionsValues) {
 	$releaseVersionsValues.Keys | ForEach-Object {
 		$repo = $_
 		$tag_name = $releaseVersionsValues.$_
 		try {
 			if ($tag_name -eq "latest") {
-				$url = "https://api.github.com/repos/$user/$repo/git/refs/tags?ref=refs/heads/main"		
-				$headers = New-Header
-				$response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
-
+				$response = Get-LatestTag
 				$position = -1
-				$sha_tag = $($response.object.sha)[$position ]
+				$sha_tag = $($response.object.sha)[$position]
 				$tag_name = $($response.ref.split("/"))[$position]
 			}
-			Write-Host "Repository: $repo, Latest tag: $tag_name, Sha: $sha_tag"
+			Write-Host "Repository: $repo, Sha: $sha_tag, Latest tag: $tag_name"
 
 			$url = "https://api.github.com/repos/$user/$repo/releases"
 			$bodyData = @{
